@@ -8,6 +8,9 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f5f5f5;
 }
+.ant-layout-content {
+  background-color: white !important;
+}
 
 #app {
   width: 100%;
@@ -17,11 +20,11 @@ body {
 /* Layout Styles */
 .layout-sider {
   background: #001529 !important;
-
+  position: sticky;
   .logo {
     height: 60px;
-    margin: 16px;
-    background: rgba(255, 255, 255, 0.3);
+    // margin: 16px;
+    // background: rgba(255, 255, 255, 0.3);
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -34,6 +37,7 @@ body {
 
 .layout-wrapper {
   min-height: 100vh;
+ 
 }
 
 /* Custom button styles */

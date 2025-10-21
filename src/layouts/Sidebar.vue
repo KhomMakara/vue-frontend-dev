@@ -2,20 +2,7 @@
   <a-layout-sider class="layout-sider" width="250" :collapsed="collapsed">
     <div class="sider-header">
       <div key="full-logo" class="logo" v-if="!collapsed">Portal Dashboard</div>
-      <div key="short-logo" class="logo" v-else>PD</div>
-
-      <a-tree-select
-        v-if="!collapsed"
-        size="large"
-        style="width: 100%; margin-top: 16px"
-        v-model:value="searchMenu"
-        show-search
-        placeholder="Search or go to ..."
-        allow-clear
-        :tree-data="searchTreeData"
-        tree-node-filter-prop="label"
-        @select="onSearchMenu"
-      />
+      <!-- <div key="short-logo" class="logo" v-else>PD</div> -->
     </div>
 
     <a-menu
@@ -58,6 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 interface MenuItem {
   menuID: string;
@@ -69,6 +57,15 @@ interface MenuItem {
 
 export default defineComponent({
   name: "LayoutSidebar",
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    
+    return {
+      route,
+      router
+    };
+  },
   data() {
     return {
       collapsed: false,
@@ -158,7 +155,7 @@ export default defineComponent({
         {
           menuID: "components",
           menuName: "B-Components",
-          menuIconID: "ico-dashboard",
+          menuIconID: "ico-components",
           subMenu: [],
           screenID: "/components"
         },
@@ -176,7 +173,7 @@ export default defineComponent({
     this.handleInitialRoute();
   },
   watch: {
-    "$route.path": function (path: string) {
+    "route.path": function (path: string) {
       this.handleRouteChange(path);
     }
   },
@@ -210,7 +207,7 @@ export default defineComponent({
   },
   methods: {
     handleInitialRoute() {
-      const currentPath = this.$route.path;
+      const currentPath = this.route.path;
       this.handleRouteChange(currentPath);
     },
     handleRouteChange(path: string) {
@@ -240,12 +237,12 @@ export default defineComponent({
     },
     handleRouterPush(menu: MenuItem) {
       if (menu.screenID) {
-        this.$router.push(menu.screenID);
+        this.router.push(menu.screenID);
       }
     },
     onSearchMenu(value: string) {
       if (value) {
-        this.$router.push(value);
+        this.router.push(value);
       }
     },
     onOpenChange(openKeys: string[]) {
@@ -259,10 +256,19 @@ export default defineComponent({
 .sider-header {
   padding: 16px;
 }
+.layout-sider {
+  position: sticky;
+  top: 0;
+  // align-self: flex-start;
+  max-height: 100vh;
+  overflow-y: auto;
+  // overflow-x: hidden;
+  line-height: 100vh;
+}
 
 .logo {
   height: 60px;
-  background: rgba(255, 255, 255, 0.3);
+  // background: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -292,7 +298,11 @@ export default defineComponent({
   }
 
   &.ico-batches::before {
-    content: '��';
+    content: '📦';
+  }
+
+  &.ico-components::before {
+    content: '🧩';
   }
 }
 </style>
